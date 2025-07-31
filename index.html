@@ -2,9 +2,273 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster Pro</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
 </head>
-<body>
+    <body class="theme-light">
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <h1><i class="fas fa-tasks"></i>
+                TaskMaster Pro
+            </h1>
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <p class="auth-switch">
+                    Don't have an account?
+                    <a href="#" id="show-register">Register</a>
+                </p>
+            </form>
+        </div>
+    </div>
 
-</body>
+    <!-- Main Application -->
+    <div id="app-screen" class="screen">
+        <header class="app-header">
+            <div class="header-left">
+                <h1><i class="fas fa-tasks"></i>
+                    TaskMaster Pro
+                </h1>
+            </div>
+            <div class="header-center">
+                <div class="search-container">
+                    <input type="text" id="search-tasks" placeholder="Search tasks...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="theme-toggle" class="btn btn-icon" title="toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="user-menu">
+                    <button id="user-menu-btn" class="btn btn-icon">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="current-user">User</span>
+                    </button>
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <a href="#" id="export-data"><i class="fas fa-download"></i> Export Data</a>
+                        <a href="#" id="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <ul class="nav-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" data-view="tasks">
+                        <i class="fas fa-list"></i> Tasks
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="dashboard">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-view="calendar">
+                        <i class="fas fa-calendar"></i> Calendar
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div id="tasks-view" class="view active">
+                <div class="view-header">
+                    <h2>My Tasks</h2>
+                    <button id="add-task-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+
+                <div class="filers-container">
+                    <div class="filter-group">
+                        <label>Category:</label>
+                        <select id="filter-category">
+                            <option value="">All</option>
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="study">Study</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <select id="filter-status">
+                            <option value="">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Priority:</label>
+                        <select id="filter-priority">
+                            <option value="">All</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tasks-container">
+                    <div class="tasks-grid" id="tasks-grid">
+                        <!-- Task cards will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="view">
+                <div class="view-header">
+                    <h2>Dashboard</h2>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-tasks">0</h3>
+                            <p>Total Tasks</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="completed-tasks">0</h3>
+                            <p>Completed Tasks</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pending-tasks">0</h3>
+                            <p>Pending Tasks</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="completion-rate">0%</h3>
+                            <p>Completion Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Task Status</h3>
+                        <canvas id="status-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Tasks by Category</h3>
+                        <canvas id="category-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Semanal Productivity</h3>
+                        <canvas id="productivity-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Task Creation/Editing -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Task</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="task-form" class="modal-body">
+                <div class="form-group">
+                    <label for="task-title">Title*</label>
+                    <input type="text" id="task-title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-category">Category</label>
+                        <select id="task-category">
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="study">Study</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date</label>
+                        <input type="date" id="task-due-date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-status">Status</label>
+                        <select id="task-status">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-task">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="save-task">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notifications-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/main.js"></script>
+    </body>
 </html>
